@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.notepad.R
 import com.example.notepad.database.NoteDatabase
@@ -17,6 +17,7 @@ class DashboardFragment : Fragment() {
     private lateinit var binding:FragmentDashboardBinding
     private lateinit var viewModelFactory: DashboardViewModelFactory
     private lateinit var viewModel: DashboardViewModel
+    private lateinit var adapter: NotesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,8 +35,18 @@ class DashboardFragment : Fragment() {
         binding.viewmodel=viewModel
         binding.lifecycleOwner=this
 
+        adapter= NotesAdapter(NoteListener { note ->
+            viewModel.onNoteClicked(note)
+        })
+
+        binding.notesList.adapter=adapter
+
+        viewModel.notes.observe(viewLifecycleOwner,Observer{
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
         return binding.root
-
-
     }
 }
