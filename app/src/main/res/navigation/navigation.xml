@@ -6,5 +6,20 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.notepad.dashboard.DashboardFragment"
-        android:label="DashboardFragment" />
+        android:label="DashboardFragment" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_editTextFragment"
+            app:destination="@id/editTextFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTextFragment"
+        android:name="com.example.notepad.edittext.EditTextFragment"
+        android:label="EditTextFragment" >
+        <argument
+            android:name="noteId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_editTextFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
 </navigation>

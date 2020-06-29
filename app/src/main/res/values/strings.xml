@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notepad</string>
+    <string name="enter_note_heading">Enter Note Heading</string>
+    <string name="enter_note_detail">Enter Note Detail</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.notepad.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 @Dao
@@ -21,5 +22,6 @@ interface NoteDatabaseDao{
     @Query("SELECT * FROM notes_table WHERE id= :noteId")
     fun getNoteById(noteId : Long) : Note?
 
-
+    @Query("SELECT * FROM notes_table ORDER BY id DESC LIMIT 1")
+    fun getNewNote() : Note?
 }

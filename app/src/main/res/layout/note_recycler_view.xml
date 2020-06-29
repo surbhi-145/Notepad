@@ -10,21 +10,18 @@
             name="clickListener"
             type="com.example.notepad.dashboard.NoteListener" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+
 
     <TextView
         android:id="@+id/textView"
+        android:textSize="18sp"
+        android:background="#ADA4C2"
+        android:padding="10dp"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        tools:text="TextView"
+        android:onClick="@{()->clickListener.onClick(note)}"
+        android:text ="@{note.noteBody}" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
