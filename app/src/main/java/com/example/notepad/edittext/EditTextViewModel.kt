@@ -1,6 +1,7 @@
 package com.example.notepad.edittext
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,34 +21,24 @@ class EditTextViewModel(val database: NoteDatabaseDao,
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     fun onSave(note : Note){
-
         uiScope.launch {
             withContext(Dispatchers.IO){
-                note.let {
-                    database.updateNote(note)
-                }
+                        database.updateNote(note) ?: return@withContext
+
             }
+            _navigateToDashboard.value=true
         }
-
-        navigate()
-
     }
 
     fun onDelete(note : Note){
         uiScope.launch {
             withContext(Dispatchers.IO){
-                note.let {
-                    database.deleteNoteWithId(note.id)
-                }
+                        database.deleteNoteWithId(note.id) ?: return@withContext
             }
+            _navigateToDashboard.value=true
         }
-        navigate()
     }
 
-
-    private fun navigate(){
-        _navigateToDashboard.value=true
-    }
 
     fun onDoneNavigation(){
         _navigateToDashboard.value=false

@@ -19,11 +19,9 @@ class DashboardViewModel(
     val navigateToViewFragment : LiveData<Note>
             get()=_navigateToViewFragment
 
-    private var _navigateToEditFragment = MutableLiveData<Boolean>()
-    val navigateToEditFragment : LiveData<Boolean>
+    private var _navigateToEditFragment = MutableLiveData<Note>()
+    val navigateToEditFragment : LiveData<Note>
         get()=_navigateToEditFragment
-
-    private var newNote=MutableLiveData<Note>()
 
     private var job= Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
@@ -36,45 +34,17 @@ class DashboardViewModel(
         _navigateToViewFragment.value=null
     }
 
-    fun onAddButtonClicked(){
-        _navigateToEditFragment.value=true
-    }
 
     fun doneEditNavigation(){
-        _navigateToEditFragment.value=false
-        newNote.value=null
+        _navigateToEditFragment.value=null
+
     }
 
-    init {
-        initializeNewNote()
-    }
-
-    private fun initializeNewNote(){
-        uiScope.launch {
-            newNote.value=getNewNote()
-        }
-    }
-
-    fun createNewNote() : Note? {
+    fun onAddButtonClicked()  {
 
         uiScope.launch {
             val note = Note()
-            insert(note)
-            newNote.value=note
-        }
-        return newNote.value
-    }
-
-    private suspend fun insert(note : Note){
-        withContext(Dispatchers.IO){
-            database.insertNote(note)
-        }
-    }
-
-    private suspend fun getNewNote():Note?{
-        return withContext(Dispatchers.IO){
-            val note = database.getNewNote()
-            note
+            _navigateToEditFragment.value=note
         }
     }
 

@@ -39,8 +39,8 @@ class ViewTextViewModel(val database: NoteDatabaseDao,
                     database.deleteNoteWithId(note.id)
                 }
             }
+            _navigateToDashboard.value=true
         }
-        _navigateToDashboard.value=true
     }
 
     fun onDashboardNavigation(){

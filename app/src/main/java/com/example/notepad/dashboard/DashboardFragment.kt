@@ -47,10 +47,7 @@ class DashboardFragment : Fragment() {
             }
         })
 
-        viewModel.navigateToEditFragment.observe(viewLifecycleOwner, Observer {it ->
-            it?.let{
-                if(it==true) {
-                    val note = viewModel.createNewNote()
+        viewModel.navigateToEditFragment.observe(viewLifecycleOwner, Observer {note ->
                     note?.let {
                         this.findNavController().navigate(
                             DashboardFragmentDirections
@@ -58,8 +55,6 @@ class DashboardFragment : Fragment() {
                         )
                         viewModel.doneEditNavigation()
                     }
-                }
-        }
         })
 
         viewModel.navigateToViewFragment.observe(viewLifecycleOwner, Observer {note->

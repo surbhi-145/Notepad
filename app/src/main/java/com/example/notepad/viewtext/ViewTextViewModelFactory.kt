@@ -3,7 +3,6 @@ package com.example.notepad.viewtext
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabaseDao
 
 class ViewTextViewModelFactory(
