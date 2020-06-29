@@ -10,16 +10,33 @@
         <action
             android:id="@+id/action_dashboardFragment_to_editTextFragment"
             app:destination="@id/editTextFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_viewTextFragment"
+            app:destination="@id/viewTextFragment" />
     </fragment>
     <fragment
         android:id="@+id/editTextFragment"
         android:name="com.example.notepad.edittext.EditTextFragment"
         android:label="EditTextFragment" >
         <argument
-            android:name="noteId"
-            app:argType="long" />
+            android:name="note"
+            app:argType="com.example.notepad.database.Note" />
         <action
             android:id="@+id/action_editTextFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewTextFragment"
+        android:name="com.example.notepad.viewtext.ViewTextFragment"
+        android:label="ViewTextFragment" >
+        <argument
+            android:name="note"
+            app:argType="com.example.notepad.database.Note" />
+        <action
+            android:id="@+id/action_viewTextFragment_to_editTextFragment"
+            app:destination="@id/editTextFragment" />
+        <action
+            android:id="@+id/action_viewTextFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
     </fragment>
 </navigation>

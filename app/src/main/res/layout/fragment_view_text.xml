@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="viewmodel"
-            type="com.example.notepad.edittext.EditTextViewModel" />
+            name="viewModel"
+            type="com.example.notepad.viewtext.ViewTextViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <TextView
         android:id="@+id/noteHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:layout_marginTop="72dp"
-        android:hint="@string/enter_note_heading"
+        tools:text="Heading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -37,13 +36,12 @@
         app:layout_constraintTop_toBottomOf="@+id/noteHeading"
         app:layout_constraintVertical_bias="0.09">
 
-        <EditText
+        <TextView
             android:id="@+id/noteBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:hint="@string/enter_note_detail" />
-
+            tools:text="Body" />
 
     </ScrollView>
 
@@ -57,7 +55,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView"
         app:layout_constraintVertical_bias="0.903"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:onClick="@{()->viewModel.onEdit()}"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/deleteButton"
@@ -71,7 +70,6 @@
         app:layout_constraintTop_toBottomOf="@+id/scrollView"
         app:layout_constraintVertical_bias="0.903"
         app:srcCompat="@android:drawable/ic_menu_delete" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

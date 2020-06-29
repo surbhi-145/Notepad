@@ -9,7 +9,6 @@ import com.example.notepad.database.NoteDatabaseDao
 import kotlinx.coroutines.*
 
 class EditTextViewModel(val database: NoteDatabaseDao,
-                        val noteId : Long,
                         application: Application):
     AndroidViewModel(application){
 
@@ -17,36 +16,15 @@ class EditTextViewModel(val database: NoteDatabaseDao,
     val navigateToDashboard : LiveData<Boolean>
         get() = _navigateToDashboard
 
-    lateinit var  currNote: Note
     private var job= Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
-    init {
-        initializeCurrNote()
-    }
-
-    private fun  initializeCurrNote(){
-        uiScope.launch {
-            val tmpNote=getCurrNote()
-            tmpNote?.let {
-                currNote=tmpNote
-            }
-        }
-    }
-
-    private suspend fun getCurrNote() : Note?{
-         return withContext(Dispatchers.IO){
-            val note= database.getNoteById(noteId)
-             note
-        }
-    }
-
-    fun onSave(){
+    fun onSave(note : Note){
 
         uiScope.launch {
             withContext(Dispatchers.IO){
-                currNote.let {
-                    database.updateNote(currNote)
+                note.let {
+                    database.updateNote(note)
                 }
             }
         }
@@ -55,11 +33,11 @@ class EditTextViewModel(val database: NoteDatabaseDao,
 
     }
 
-    fun onDelete(){
+    fun onDelete(note : Note){
         uiScope.launch {
             withContext(Dispatchers.IO){
-                currNote.let {
-                    database.deleteNote(currNote)
+                note.let {
+                    database.deleteNoteWithId(note.id)
                 }
             }
         }

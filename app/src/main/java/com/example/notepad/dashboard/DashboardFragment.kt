@@ -49,17 +49,25 @@ class DashboardFragment : Fragment() {
 
         viewModel.navigateToEditFragment.observe(viewLifecycleOwner, Observer {it ->
             it?.let{
-                val note = viewModel.createNewNote()
-                note?.let{
-                    this.findNavController().navigate(DashboardFragmentDirections
-                        .actionDashboardFragmentToEditTextFragment(note.id))
-                    viewModel.doneEditNavigation()
+                if(it==true) {
+                    val note = viewModel.createNewNote()
+                    note?.let {
+                        this.findNavController().navigate(
+                            DashboardFragmentDirections
+                                .actionDashboardFragmentToEditTextFragment(note)
+                        )
+                        viewModel.doneEditNavigation()
+                    }
                 }
         }
         })
 
-        viewModel.navigateToViewFragment.observe(viewLifecycleOwner, Observer {
-            //TODO
+        viewModel.navigateToViewFragment.observe(viewLifecycleOwner, Observer {note->
+            note?.let{
+                this.findNavController().navigate(DashboardFragmentDirections
+                    .actionDashboardFragmentToViewTextFragment(note))
+                viewModel.doneViewNavigation()
+            }
         })
         return binding.root
     }

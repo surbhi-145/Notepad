@@ -24,4 +24,7 @@ interface NoteDatabaseDao{
 
     @Query("SELECT * FROM notes_table ORDER BY id DESC LIMIT 1")
     fun getNewNote() : Note?
+
+    @Query("DELETE FROM notes_table WHERE id= :noteId")
+    fun deleteNoteWithId(noteId : Long)
 }
