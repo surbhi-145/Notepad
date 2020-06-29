@@ -23,7 +23,9 @@
             app:argType="com.example.notepad.database.Note" />
         <action
             android:id="@+id/action_editTextFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/editTextFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/viewTextFragment"
@@ -34,9 +36,12 @@
             app:argType="com.example.notepad.database.Note" />
         <action
             android:id="@+id/action_viewTextFragment_to_editTextFragment"
-            app:destination="@id/editTextFragment" />
+            app:destination="@id/editTextFragment"
+            app:popUpTo="@id/dashboardFragment" />
         <action
             android:id="@+id/action_viewTextFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/viewTextFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

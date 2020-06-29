@@ -22,21 +22,19 @@ class EditTextViewModel(val database: NoteDatabaseDao,
 
     fun onSave(note : Note){
         uiScope.launch {
-            withContext(Dispatchers.IO){
-                        database.updateNote(note) ?: return@withContext
+            if(note.noteBody.isNotEmpty() || note.noteHeading.isNotEmpty()) {
+                withContext(Dispatchers.IO) {
+                    database.updateNote(note) ?: return@withContext
 
+                }
             }
             _navigateToDashboard.value=true
         }
     }
 
-    fun onDelete(note : Note){
-        uiScope.launch {
-            withContext(Dispatchers.IO){
-                        database.deleteNoteWithId(note.id) ?: return@withContext
-            }
+    fun onCancel(){
             _navigateToDashboard.value=true
-        }
+
     }
 
 

@@ -16,7 +16,7 @@ interface NoteDatabaseDao{
     @Delete
     fun deleteNote(note : Note)
 
-    @Query("SELECT * FROM notes_table")
+    @Query("SELECT * FROM notes_table ORDER BY id DESC")
     fun getAllNotes() : LiveData<List<Note>>
 
     @Query("SELECT * FROM notes_table WHERE id= :noteId")

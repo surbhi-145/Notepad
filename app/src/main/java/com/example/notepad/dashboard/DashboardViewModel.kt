@@ -23,9 +23,6 @@ class DashboardViewModel(
     val navigateToEditFragment : LiveData<Note>
         get()=_navigateToEditFragment
 
-    private var job= Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
-
     fun onNoteClicked(note : Note){
             _navigateToViewFragment.value=note
     }
@@ -41,16 +38,10 @@ class DashboardViewModel(
     }
 
     fun onAddButtonClicked()  {
-
-        uiScope.launch {
             val note = Note()
             _navigateToEditFragment.value=note
-        }
+
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
-    }
 
 }

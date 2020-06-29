@@ -42,14 +42,13 @@ class EditTextFragment : Fragment(){
         setNoteData()
 
         binding.saveButton.setOnClickListener(){
-            note.noteBody = binding.noteBody.text.toString()
-            note.noteHeading = binding.noteHeading.text.toString()
+            note.noteBody = binding.noteBody.editText?.text.toString()
+            note.noteHeading = binding.noteHeading.editText?.text.toString()
             viewModel.onSave(note)
         }
 
         binding.deleteButton.setOnClickListener(){
-            val note = args.note
-            viewModel.onDelete(note)
+            viewModel.onCancel()
         }
 
       viewModel.navigateToDashboard.observe(viewLifecycleOwner, Observer {
@@ -66,8 +65,8 @@ class EditTextFragment : Fragment(){
 
     private fun setNoteData(){
         if(note.noteBody.isNotEmpty() || note.noteHeading.isNotEmpty()){
-            binding.noteBody.setText(note.noteBody)
-            binding.noteHeading.setText(note.noteHeading)
+            binding.noteBody.editText?.setText(note.noteBody)
+            binding.noteHeading.editText?.setText(note.noteHeading)
         }
     }
 
