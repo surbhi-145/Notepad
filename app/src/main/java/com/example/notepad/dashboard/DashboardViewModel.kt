@@ -15,6 +15,10 @@ class DashboardViewModel(
 
     val notes= database.getAllNotes()
 
+    private var _isGridView = MutableLiveData<Boolean>()
+    val isGridView : LiveData<Boolean>
+        get()=_isGridView
+
     private var _navigateToViewFragment = MutableLiveData<Note>()
     val navigateToViewFragment : LiveData<Note>
             get()=_navigateToViewFragment
@@ -43,5 +47,8 @@ class DashboardViewModel(
 
     }
 
+    fun onViewTypeClicked(){
+        _isGridView.value = !(_isGridView.value ==null || _isGridView.value==true)
+    }
 
 }

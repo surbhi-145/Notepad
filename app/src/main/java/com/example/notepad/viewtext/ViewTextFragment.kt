@@ -1,10 +1,12 @@
 package com.example.notepad.viewtext
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,7 +16,9 @@ import com.example.notepad.R
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
 import com.example.notepad.databinding.FragmentViewTextBinding
+import kotlinx.android.synthetic.main.fragment_edit_text.*
 import kotlinx.android.synthetic.main.fragment_view_text.*
+import kotlinx.android.synthetic.main.fragment_view_text.noteBody
 import java.util.zip.Inflater
 
 class ViewTextFragment : Fragment(){
@@ -44,12 +48,17 @@ class ViewTextFragment : Fragment(){
         binding.lifecycleOwner=this
         setNoteData()
 
+        //menu
         binding.topAppBar.setNavigationOnClickListener {
             viewModel.onBack()
         }
 
         binding.topAppBar.setOnMenuItemClickListener{item: MenuItem ->
             when(item.itemId){
+                R.id.shareButton->{
+                    shareNote()
+                    true
+                }
                 R.id.saveButton->{
                     viewModel.onEdit()
                     true
@@ -88,6 +97,18 @@ class ViewTextFragment : Fragment(){
     private fun setNoteData(){
         binding.noteHeading.text=note.noteHeading
         binding.noteBody.text=note.noteBody
+    }
+
+
+    private fun getShareIntent() : Intent {
+        return ShareCompat.IntentBuilder.from(requireActivity())
+            .setText(getString(R.string.share_note, note.noteHeading, note.noteBody))
+            .setType("text/plain")
+            .intent
+    }
+
+    private fun shareNote() {
+        startActivity(getShareIntent())
     }
 }
 

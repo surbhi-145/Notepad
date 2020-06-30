@@ -9,9 +9,13 @@
         android:label="DashboardFragment" >
         <action
             android:id="@+id/action_dashboardFragment_to_editTextFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:destination="@id/editTextFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_viewTextFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:destination="@id/viewTextFragment" />
     </fragment>
     <fragment
@@ -24,6 +28,8 @@
         <action
             android:id="@+id/action_editTextFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/editTextFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -37,9 +43,13 @@
         <action
             android:id="@+id/action_viewTextFragment_to_editTextFragment"
             app:destination="@id/editTextFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/dashboardFragment" />
         <action
             android:id="@+id/action_viewTextFragment_to_dashboardFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:destination="@id/dashboardFragment"
             app:popUpTo="@id/viewTextFragment"
             app:popUpToInclusive="true" />
