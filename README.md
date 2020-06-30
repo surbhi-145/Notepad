@@ -7,4 +7,5 @@
 -Change layout between linear layout and grid layout\
 -Dark theme support (when system dark mode is enabled)\
 -Delete Note\
--Edit current Notes
+-Edit current Notes\
+-Share Note
