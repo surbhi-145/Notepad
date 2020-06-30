@@ -2,9 +2,7 @@ package com.example.notepad.dashboard
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -36,6 +34,17 @@ class DashboardFragment : Fragment() {
 
         binding.viewmodel=viewModel
         binding.lifecycleOwner=this
+
+        //Menu
+        binding.topAppBar.setOnMenuItemClickListener{item: MenuItem ->
+            when(item.itemId){
+                R.id.search_note ->{
+                    //TODO
+                    true
+                }
+                else->false
+            }
+        }
 
         adapter= NotesAdapter(NoteListener { note ->
             viewModel.onNoteClicked(note)

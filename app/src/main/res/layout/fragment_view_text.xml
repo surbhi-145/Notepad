@@ -9,74 +9,69 @@
             type="com.example.notepad.viewtext.ViewTextViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <TextView
-        android:textSize="30sp"
-        android:id="@+id/noteHeading"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Heading" />
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteHeading"
-        app:layout_constraintVertical_bias="0.09">
-
-        <TextView
-            android:id="@+id/noteBody"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="viewStart"
-            android:textSize="18sp"
-            tools:text="Body" />
+            android:layout_height="wrap_content">
 
-    </ScrollView>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/viewtext_menu"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="92dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView"
-        app:layout_constraintVertical_bias="0.903"
-        android:onClick="@{()->viewModel.onEdit()}"
-        app:srcCompat="@drawable/ic_outline_edit_24" />
+        <androidx.core.widget.NestedScrollView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/bounding_box_view_text">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/saveButton"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView"
-        app:layout_constraintVertical_bias="0.903"
-        app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:textSize="30sp"
+                    android:padding="10dp"
+                    android:id="@+id/noteHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="20dp"
+                    tools:text="Heading" />
+
+                <TextView
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"/>
+
+                <TextView
+                    android:id="@+id/noteBody"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewStart"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="18sp"
+                    tools:text="Body" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

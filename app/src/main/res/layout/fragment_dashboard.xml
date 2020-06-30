@@ -8,38 +8,47 @@
             name="viewmodel"
             type="com.example.notepad.dashboard.DashboardViewModel" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liftOnScroll="true">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/app_name"
+                app:menu="@menu/navdrawer_menu_dashboard"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:spanCount="2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNewNoteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.907"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/notesList"
-        app:layout_constraintVertical_bias="0.934"
+        android:focusable="true"
         app:srcCompat="@android:drawable/ic_input_add"
         android:onClick="@{()->viewmodel.onAddButtonClicked()}"/>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

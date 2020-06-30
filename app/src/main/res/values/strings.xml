@@ -2,5 +2,9 @@
     <string name="app_name">Notepad</string>
     <string name="enter_note_heading">Note Heading</string>
     <string name="enter_note_detail">Note Detail</string>
+    <string name="search_note">Search Note</string>
+    <string name="about_app">About App</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
 
 </resources>

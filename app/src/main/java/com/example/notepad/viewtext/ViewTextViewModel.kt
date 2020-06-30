@@ -43,6 +43,10 @@ class ViewTextViewModel(val database: NoteDatabaseDao,
         }
     }
 
+    fun onBack(){
+        _navigateToDashboard.value=true
+    }
+
     fun onDashboardNavigation(){
         _navigateToDashboard.value=false
     }

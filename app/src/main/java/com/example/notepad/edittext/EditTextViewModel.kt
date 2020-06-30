@@ -32,11 +32,9 @@ class EditTextViewModel(val database: NoteDatabaseDao,
         }
     }
 
-    fun onCancel(){
-            _navigateToDashboard.value=true
-
+    fun onBack(){
+        _navigateToDashboard.value=true
     }
-
 
     fun onDoneNavigation(){
         _navigateToDashboard.value=false

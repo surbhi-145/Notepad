@@ -2,6 +2,7 @@ package com.example.notepad.viewtext
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -43,9 +44,25 @@ class ViewTextFragment : Fragment(){
         binding.lifecycleOwner=this
         setNoteData()
 
-        binding.deleteButton.setOnClickListener(){
-            viewModel.onDelete(note)
+        binding.topAppBar.setNavigationOnClickListener {
+            viewModel.onBack()
         }
+
+        binding.topAppBar.setOnMenuItemClickListener{item: MenuItem ->
+            when(item.itemId){
+                R.id.saveButton->{
+                    viewModel.onEdit()
+                    true
+                }
+                R.id.deleteButton->{
+                    viewModel.onDelete(note)
+                    true
+                }
+                else->false
+            }
+        }
+
+
 
         viewModel.navigateToDashboard.observe(viewLifecycleOwner, Observer { it ->
             if(it==true){
