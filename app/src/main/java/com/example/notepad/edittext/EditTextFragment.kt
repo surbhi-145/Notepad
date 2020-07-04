@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.notepad.R
+import com.example.notepad.ReminderDialog.ReminderDialogFragment
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
 import com.example.notepad.databinding.FragmentEditTextBinding
@@ -56,7 +57,10 @@ class EditTextFragment : Fragment(){
                     note.noteHeading = binding.noteHeading.editText?.text.toString()
                     viewModel.onSave(note)
                     true
-                }
+                }R.id.ReminderButton -> {
+                    ReminderDialogFragment().show(parentFragmentManager,"Reminder Dialog")
+                    true
+            }
                 else->false
             }
         }

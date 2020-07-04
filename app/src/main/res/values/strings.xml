@@ -10,5 +10,9 @@
     <string name="share_note">%s\n%s</string>
     <string name="search_hint">Search Notes</string>
     <string name="view_type">View type</string>
+    <string name="set_reminder">Set Reminder</string>
+    <string name="cancel">Cancel</string>
+    <string name="set_date">Set Date</string>
+    <string name="set_time">Set Time</string>
 
 </resources>

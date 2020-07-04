@@ -16,10 +16,6 @@ import com.example.notepad.R
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
 import com.example.notepad.databinding.FragmentViewTextBinding
-import kotlinx.android.synthetic.main.fragment_edit_text.*
-import kotlinx.android.synthetic.main.fragment_view_text.*
-import kotlinx.android.synthetic.main.fragment_view_text.noteBody
-import java.util.zip.Inflater
 
 class ViewTextFragment : Fragment(){
 
