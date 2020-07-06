@@ -1,14 +1,17 @@
 package com.example.notepad.edittext
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,7 +26,8 @@ import com.example.notepad.databinding.FragmentEditTextBinding
 
 
 class EditTextFragment : Fragment() ,
-TimePickerDialog.OnTimeSetListener{
+TimePickerDialog.OnTimeSetListener,
+DatePickerDialog.OnDateSetListener{
 
     private lateinit var binding:FragmentEditTextBinding
     private lateinit var viewModel: EditTextViewModel
@@ -67,18 +71,7 @@ TimePickerDialog.OnTimeSetListener{
                     viewModel.onSave(note)
                     true
                 }R.id.ReminderButton -> {
-                val dialog = TimePickerDialog(requireContext(), this,
-                    dateTime.hour,dateTime.minute,true)
-                dialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.cancel),
-                    DialogInterface.OnClickListener{
-                        dialog, id ->
-                    // User cancelled the dialog
-                    dateTime.isSet=false
-                    updateNote(dateTime)
-                    setReminderText()
-                    dialog.dismiss()
-                })
-                dialog.show()
+                    dateTimePicker()
                     true
             }
                 else->false
@@ -138,5 +131,43 @@ TimePickerDialog.OnTimeSetListener{
         dateTime.minute=minute
         updateNote(dateTime)
         setReminderText()
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        dateTime.isSet=true
+        dateTime.year=year
+        dateTime.month=month
+        dateTime.day=dayOfMonth
+        timePicker()
+    }
+
+    private fun dateTimePicker(){
+        val dateDialog = DatePickerDialog(requireContext(),this,
+        dateTime.year,dateTime.month,dateTime.day)
+        dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.cancel),
+        DialogInterface.OnClickListener{
+            dialog, which ->
+            // User cancelled the dialog
+            dateTime.isSet=false
+            updateNote(dateTime)
+            setReminderText()
+            dialog.dismiss()
+        })
+        dateDialog.show()
+    }
+
+    private fun timePicker(){
+        val dialog = TimePickerDialog(requireContext(), this,
+            dateTime.hour,dateTime.minute,true)
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.cancel),
+            DialogInterface.OnClickListener{
+                    dialog, id ->
+                // User cancelled the dialog
+                dateTime.isSet=false
+                updateNote(dateTime)
+                setReminderText()
+                dialog.dismiss()
+            })
+        dialog.show()
     }
 }
