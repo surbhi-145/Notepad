@@ -72,6 +72,13 @@
                         android:textSize="20sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/reminder_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:textAlignment="center" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

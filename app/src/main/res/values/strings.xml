@@ -7,12 +7,12 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
-    <string name="share_note">%s\n%s</string>
+    <string name="share_note">%s\n\n%s</string>
     <string name="search_hint">Search Notes</string>
     <string name="view_type">View type</string>
     <string name="set_reminder">Set Reminder</string>
     <string name="cancel">Cancel</string>
     <string name="set_date">Set Date</string>
     <string name="set_time">Set Time</string>
-
+    <string name="reminder_text">Reminder set : for %d / %d / %d %d : %d</string>
 </resources>

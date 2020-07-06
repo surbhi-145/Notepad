@@ -43,6 +43,7 @@ class ViewTextFragment : Fragment(){
         binding.viewModel=viewModel
         binding.lifecycleOwner=this
         setNoteData()
+        setReminderText()
 
         //menu
         binding.topAppBar.setNavigationOnClickListener {
@@ -105,6 +106,17 @@ class ViewTextFragment : Fragment(){
 
     private fun shareNote() {
         startActivity(getShareIntent())
+    }
+
+    private fun setReminderText(){
+        if(note.reminder){
+
+            binding.reminderText.text =
+                getString(R.string.reminder_text,note.day,note.month,note.year,note.hour, note.minute)
+            binding.reminderText.visibility = View.VISIBLE
+        }else{
+            binding.reminderText.visibility = View.INVISIBLE
+        }
     }
 }
 

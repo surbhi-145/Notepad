@@ -14,12 +14,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.notepad.R
+import com.example.notepad.ReminderDialog.DateTime
 import com.example.notepad.ReminderDialog.ReminderDialogFragment
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
 import com.example.notepad.databinding.FragmentEditTextBinding
 
-class EditTextFragment : Fragment(){
+class EditTextFragment : Fragment() ,
+    ReminderDialogFragment.ReminderDialogListener{
 
     private lateinit var binding:FragmentEditTextBinding
     private lateinit var viewModel: EditTextViewModel
@@ -40,10 +42,12 @@ class EditTextFragment : Fragment(){
         viewModelFactory = EditTextViewModelFactory(dataSource,application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditTextViewModel::class.java)
 
+
         note=args.note
         binding.viewmodel=viewModel
         binding.lifecycleOwner=this
         setNoteData()
+        setReminderText()
 
         //Menu
         binding.topAppBar.setNavigationOnClickListener {
@@ -58,7 +62,8 @@ class EditTextFragment : Fragment(){
                     viewModel.onSave(note)
                     true
                 }R.id.ReminderButton -> {
-                    ReminderDialogFragment().show(parentFragmentManager,"Reminder Dialog")
+                    val dialog  = ReminderDialogFragment(this)
+                    dialog.show(parentFragmentManager,"Reminder Dialog")
                     true
             }
                 else->false
@@ -68,6 +73,9 @@ class EditTextFragment : Fragment(){
       viewModel.navigateToDashboard.observe(viewLifecycleOwner, Observer {
             if(it==true) {
                 view?.hideKeyboard()
+                if(note.reminder){
+                    //TODO
+                }
                 this.findNavController().navigate(
                     EditTextFragmentDirections
                         .actionEditTextFragmentToDashboardFragment()
@@ -88,6 +96,36 @@ class EditTextFragment : Fragment(){
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    override fun onDialogPositiveClick(dateTime: DateTime) {
+        updateNote(dateTime)
+        setReminderText()
+    }
+
+    override fun onDialogNegativeClick(dateTime: DateTime) {
+         updateNote(dateTime)
+        setReminderText()
+    }
+
+    private fun setReminderText(){
+        if(note.reminder){
+
+            binding.reminderText.text =
+                getString(R.string.reminder_text,note.day,note.month,note.year,note.hour, note.minute)
+            binding.reminderText.visibility = View.VISIBLE
+        }else{
+            binding.reminderText.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun updateNote(dateTime: DateTime){
+        note.year=dateTime.year
+        note.month=dateTime.month
+        note.day=dateTime.day
+        note.hour=dateTime.hour
+        note.minute=dateTime.minute
+        note.reminder=dateTime.isSet
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -16,5 +17,24 @@ data class Note(
     var noteHeading: String = "",
 
     @ColumnInfo (name = "note_body")
-    var noteBody : String = ""
+    var noteBody : String = "",
+
+    @ColumnInfo(name = "year")
+    var year : Int? = null,
+
+    @ColumnInfo(name = "month")
+    var month : Int? = null,
+
+    @ColumnInfo(name = "day")
+    var day : Int? = null,
+
+    @ColumnInfo(name = "hour")
+    var hour : Int? = null,
+
+    @ColumnInfo(name = "minute")
+    var minute : Int? = null,
+
+    @ColumnInfo(name = "reminder")
+    var  reminder: Boolean = false
+
 ) : Parcelable
