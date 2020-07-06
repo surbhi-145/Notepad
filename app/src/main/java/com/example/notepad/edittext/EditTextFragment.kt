@@ -1,13 +1,15 @@
 package com.example.notepad.edittext
 
+import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,18 +17,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.notepad.R
 import com.example.notepad.ReminderDialog.DateTime
-import com.example.notepad.ReminderDialog.ReminderDialogFragment
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
 import com.example.notepad.databinding.FragmentEditTextBinding
 
+
 class EditTextFragment : Fragment() ,
-    ReminderDialogFragment.ReminderDialogListener{
+TimePickerDialog.OnTimeSetListener{
 
     private lateinit var binding:FragmentEditTextBinding
     private lateinit var viewModel: EditTextViewModel
     private lateinit var viewModelFactory: EditTextViewModelFactory
     private lateinit var note : Note
+    private lateinit var dateTime: DateTime
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +47,10 @@ class EditTextFragment : Fragment() ,
 
 
         note=args.note
+        dateTime = DateTime()
         binding.viewmodel=viewModel
         binding.lifecycleOwner=this
+        updateNote(dateTime)
         setNoteData()
         setReminderText()
 
@@ -62,8 +67,18 @@ class EditTextFragment : Fragment() ,
                     viewModel.onSave(note)
                     true
                 }R.id.ReminderButton -> {
-                    val dialog  = ReminderDialogFragment(this)
-                    dialog.show(parentFragmentManager,"Reminder Dialog")
+                val dialog = TimePickerDialog(requireContext(), this,
+                    dateTime.hour,dateTime.minute,true)
+                dialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.cancel),
+                    DialogInterface.OnClickListener{
+                        dialog, id ->
+                    // User cancelled the dialog
+                    dateTime.isSet=false
+                    updateNote(dateTime)
+                    setReminderText()
+                    dialog.dismiss()
+                })
+                dialog.show()
                     true
             }
                 else->false
@@ -98,19 +113,8 @@ class EditTextFragment : Fragment() ,
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    override fun onDialogPositiveClick(dateTime: DateTime) {
-        updateNote(dateTime)
-        setReminderText()
-    }
-
-    override fun onDialogNegativeClick(dateTime: DateTime) {
-         updateNote(dateTime)
-        setReminderText()
-    }
-
     private fun setReminderText(){
         if(note.reminder){
-
             binding.reminderText.text =
                 getString(R.string.reminder_text,note.day,note.month,note.year,note.hour, note.minute)
             binding.reminderText.visibility = View.VISIBLE
@@ -128,4 +132,11 @@ class EditTextFragment : Fragment() ,
         note.reminder=dateTime.isSet
     }
 
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        dateTime.isSet=true
+        dateTime.hour=hourOfDay
+        dateTime.minute=minute
+        updateNote(dateTime)
+        setReminderText()
+    }
 }
