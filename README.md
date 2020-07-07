@@ -8,4 +8,5 @@
 -Dark theme support (when system dark mode is enabled)\
 -Delete Note\
 -Edit current Notes\
--Share Note
+-Share Note \
+-Set Reminder & snooze them
