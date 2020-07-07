@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,6 +41,7 @@ DatePickerDialog.OnDateSetListener{
     private lateinit var note : Note
     private lateinit var dateTime: DateTime
 
+    @RequiresApi(VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,7 +74,7 @@ DatePickerDialog.OnDateSetListener{
 
         //Menu
         binding.topAppBar.setNavigationOnClickListener {
-                viewModel.onBack()
+                viewModel.onBack(note)
         }
 
         binding.topAppBar.setOnMenuItemClickListener{item: MenuItem ->
@@ -165,7 +167,7 @@ DatePickerDialog.OnDateSetListener{
         dateTime.year,dateTime.month,dateTime.day)
         dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.cancel),
         DialogInterface.OnClickListener{
-            dialog, which ->
+                dialog, _ ->
             // User cancelled the dialog
             dateTime.isSet=false
             updateNote(dateTime)
@@ -180,7 +182,7 @@ DatePickerDialog.OnDateSetListener{
             dateTime.hour,dateTime.minute,true)
         dialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.cancel),
             DialogInterface.OnClickListener{
-                    dialog, id ->
+                    dialog, _ ->
                 // User cancelled the dialog
                 dateTime.isSet=false
                 updateNote(dateTime)

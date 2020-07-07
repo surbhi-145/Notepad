@@ -5,7 +5,9 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.AlarmManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -46,15 +48,20 @@ class EditTextViewModel(val database: NoteDatabaseDao,
             PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun onSave(note : Note){
 
         uiScope.launch {
             if(note.noteBody.isNotEmpty() || note.noteHeading.isNotEmpty()) {
                 withContext(Dispatchers.IO) {
-                    database.updateNote(note) ?: return@withContext
-
+                    database.updateNote(note)
                 }
+            }else{
+                    withContext(Dispatchers.IO){
+                        database.deleteNote(note)
+                    }
             }
+
             Log.i("EditTextFragment","$note")
             if(note.reminder){
                 scheduleAlarm(note)
@@ -65,14 +72,20 @@ class EditTextViewModel(val database: NoteDatabaseDao,
         }
     }
 
-    fun onBack(){
-        _navigateToDashboard.value=true
+    fun onBack(note : Note){
+        uiScope.launch {
+            withContext(Dispatchers.IO){
+                database.deleteNote(note)
+            }
+            _navigateToDashboard.value=true
+        }
     }
 
     fun onDoneNavigation(){
         _navigateToDashboard.value=false
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun scheduleAlarm(note : Note){
 
         createPendingIntent(note)
@@ -85,11 +98,11 @@ class EditTextViewModel(val database: NoteDatabaseDao,
         note.month?.let { c.set(Calendar.MONTH, it) }
         note.day?.let { c.set(Calendar.DAY_OF_MONTH, it) }
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.timeInMillis,notifyPendingIntent)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,c.timeInMillis,notifyPendingIntent)
         Log.i("Receiver","Alarm scheduled , ${note.id} ${note.hour} ${note.minute}")
     }
 
-    fun cancelAlarm(note: Note){
+    private fun cancelAlarm(note: Note){
         createPendingIntent(note)
         alarmManager.cancel(notifyPendingIntent)
 

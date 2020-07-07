@@ -13,6 +13,11 @@ class DashboardViewModel(
     val database: NoteDatabaseDao,
     application: Application) : AndroidViewModel(application){
 
+    private var viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+
+    private var note = Note()
     val notes= database.getAllNotes()
 
     private var _isGridView = MutableLiveData<Boolean>()
@@ -26,6 +31,14 @@ class DashboardViewModel(
     private var _navigateToEditFragment = MutableLiveData<Note>()
     val navigateToEditFragment : LiveData<Note>
         get()=_navigateToEditFragment
+
+    private suspend fun initializeNote() : Note? {
+        return withContext(Dispatchers.IO){
+            database.updateNote(note)
+            val currNote = database.getNewNote()
+            currNote
+        }
+    }
 
     fun onNoteClicked(note : Note){
             _navigateToViewFragment.value=note
@@ -42,9 +55,10 @@ class DashboardViewModel(
     }
 
     fun onAddButtonClicked()  {
-            val note = Note()
-            _navigateToEditFragment.value=note
-
+            uiScope.launch {
+                note = initializeNote()!!
+                _navigateToEditFragment.value=note
+            }
     }
 
     fun onViewTypeClicked(){
