@@ -1,4 +1,4 @@
-package com.example.notepad.ReminderDialog
+package com.example.notepad.reminder
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

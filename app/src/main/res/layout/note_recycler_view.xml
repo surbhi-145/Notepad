@@ -43,5 +43,6 @@
             android:text="@{note.noteBody}"
             android:textSize="18sp"
             tools:text="TextView" />
+
     </LinearLayout>
 </layout>

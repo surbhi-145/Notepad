@@ -1,9 +1,14 @@
 package com.example.notepad.edittext
 
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.os.Build
+import android.os.Build.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.notepad.R
-import com.example.notepad.ReminderDialog.DateTime
+import com.example.notepad.reminder.DateTime
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
 import com.example.notepad.databinding.FragmentEditTextBinding
@@ -54,9 +59,16 @@ DatePickerDialog.OnDateSetListener{
         dateTime = DateTime()
         binding.viewmodel=viewModel
         binding.lifecycleOwner=this
+        if(note.year==null)
         updateNote(dateTime)
         setNoteData()
-        setReminderText()
+        setReminderTextAndIcon()
+
+
+        createChannel(
+            getString(R.string.notification_channel_id),
+            getString(R.string.notification_channel_name)
+        )
 
         //Menu
         binding.topAppBar.setNavigationOnClickListener {
@@ -71,7 +83,12 @@ DatePickerDialog.OnDateSetListener{
                     viewModel.onSave(note)
                     true
                 }R.id.ReminderButton -> {
-                    dateTimePicker()
+                    if(note.reminder){
+                        note.reminder=false
+                        setReminderTextAndIcon()
+                    }else {
+                        dateTimePicker()
+                    }
                     true
             }
                 else->false
@@ -81,9 +98,6 @@ DatePickerDialog.OnDateSetListener{
       viewModel.navigateToDashboard.observe(viewLifecycleOwner, Observer {
             if(it==true) {
                 view?.hideKeyboard()
-                if(note.reminder){
-                    //TODO
-                }
                 this.findNavController().navigate(
                     EditTextFragmentDirections
                         .actionEditTextFragmentToDashboardFragment()
@@ -91,6 +105,7 @@ DatePickerDialog.OnDateSetListener{
                 viewModel.onDoneNavigation()
             }
         })
+
         return binding.root
     }
 
@@ -106,13 +121,17 @@ DatePickerDialog.OnDateSetListener{
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private fun setReminderText(){
+    private fun setReminderTextAndIcon(){
+        Log.i("EditTextFragment","$note")
         if(note.reminder){
             binding.reminderText.text =
                 getString(R.string.reminder_text,note.day,note.month,note.year,note.hour, note.minute)
             binding.reminderText.visibility = View.VISIBLE
+            binding.topAppBar.menu.findItem(R.id.ReminderButton).setIcon(R.drawable.ic_baseline_alarm_off_24)
+
         }else{
             binding.reminderText.visibility = View.INVISIBLE
+            binding.topAppBar.menu.findItem(R.id.ReminderButton).setIcon(R.drawable.ic_baseline_alarm_add_24)
         }
     }
 
@@ -130,7 +149,7 @@ DatePickerDialog.OnDateSetListener{
         dateTime.hour=hourOfDay
         dateTime.minute=minute
         updateNote(dateTime)
-        setReminderText()
+        setReminderTextAndIcon()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -150,7 +169,7 @@ DatePickerDialog.OnDateSetListener{
             // User cancelled the dialog
             dateTime.isSet=false
             updateNote(dateTime)
-            setReminderText()
+            setReminderTextAndIcon()
             dialog.dismiss()
         })
         dateDialog.show()
@@ -165,9 +184,33 @@ DatePickerDialog.OnDateSetListener{
                 // User cancelled the dialog
                 dateTime.isSet=false
                 updateNote(dateTime)
-                setReminderText()
+                setReminderTextAndIcon()
                 dialog.dismiss()
             })
         dialog.show()
+    }
+
+    private fun createChannel(channelId : String, channelName : String) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                // TODO: Step 2.4 change importance
+                NotificationManager.IMPORTANCE_HIGH
+            )// TODO: Step 2.6 disable badges for this channel
+                .apply {
+                    setShowBadge(false)
+                }
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = getString(R.string.reminder_channel_description)
+
+            val notificationManager = requireActivity().getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager?.createNotificationChannel(notificationChannel)
+
+        }
     }
 }

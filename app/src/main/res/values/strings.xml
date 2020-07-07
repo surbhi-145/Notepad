@@ -15,4 +15,8 @@
     <string name="set_date">Set Date</string>
     <string name="set_time">Set Time</string>
     <string name="reminder_text">Reminder set : for %d / %d / %d %d : %d</string>
+    <string name="reminder_channel_description">Note Reminder</string>
+    <string name="notification_channel_id" translatable="false">reminder_channel</string>
+    <string name="notification_channel_name" translatable="true">Reminder</string>
+    <string name="done">Done</string>
 </resources>
