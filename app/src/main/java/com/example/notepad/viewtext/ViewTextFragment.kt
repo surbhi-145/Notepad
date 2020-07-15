@@ -109,12 +109,21 @@ class ViewTextFragment : Fragment(){
     }
 
     private fun setReminderText(){
-        if(note.reminder){
-            binding.reminderText.text =
-                getString(R.string.reminder_text,note.day,note.month,note.year,note.hour, note.minute)
-            binding.reminderText.visibility = View.VISIBLE
-        }else{
-            binding.reminderText.visibility = View.INVISIBLE
+        if(note.reminder != null) {
+            if (note.reminder!!) {
+                binding.reminderText.text =
+                    getString(
+                        R.string.reminder_text,
+                        note.day,
+                        note.month,
+                        note.year,
+                        note.hour,
+                        note.minute
+                    )
+                binding.reminderText.visibility = View.VISIBLE
+            } else {
+                binding.reminderText.visibility = View.INVISIBLE
+            }
         }
     }
 }

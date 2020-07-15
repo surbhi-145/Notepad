@@ -43,7 +43,7 @@ class EditTextViewModel(val database: NoteDatabaseDao,
         }
         notifyPendingIntent =PendingIntent.getBroadcast(
             getApplication(),
-            note.id,
+            note.id.toInt(),
             notifyIntent,
             PendingIntent.FLAG_UPDATE_CURRENT)
     }
@@ -56,29 +56,19 @@ class EditTextViewModel(val database: NoteDatabaseDao,
                 withContext(Dispatchers.IO) {
                     database.updateNote(note)
                 }
-            }else{
-                    withContext(Dispatchers.IO){
-                        database.deleteNote(note)
-                    }
-            }
-
-            Log.i("EditTextFragment","$note")
-            if(note.reminder){
-                scheduleAlarm(note)
-            }else{
-                cancelAlarm(note)
+                Log.i("EditTextFragment", "$note")
+                if (note.reminder!!) {
+                    scheduleAlarm(note)
+                } else {
+                    cancelAlarm(note)
+                }
             }
             _navigateToDashboard.value=true
         }
     }
 
     fun onBack(note : Note){
-        uiScope.launch {
-            withContext(Dispatchers.IO){
-                database.deleteNote(note)
-            }
             _navigateToDashboard.value=true
-        }
     }
 
     fun onDoneNavigation(){

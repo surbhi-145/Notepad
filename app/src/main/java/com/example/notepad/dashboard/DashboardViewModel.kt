@@ -32,6 +32,18 @@ class DashboardViewModel(
     val navigateToEditFragment : LiveData<Note>
         get()=_navigateToEditFragment
 
+    init {
+        deleteEmpty();
+    }
+
+    fun deleteEmpty(){
+        uiScope.launch {
+            withContext(Dispatchers.IO){
+                database.deleteEmpty()
+            }
+        }
+    }
+
     private suspend fun initializeNote() : Note? {
         return withContext(Dispatchers.IO){
             database.updateNote(note)

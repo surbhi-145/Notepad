@@ -21,8 +21,8 @@ import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.notepad.R
 import com.example.notepad.reminder.DateTime
@@ -85,7 +85,7 @@ DatePickerDialog.OnDateSetListener{
                     viewModel.onSave(note)
                     true
                 }R.id.ReminderButton -> {
-                    if(note.reminder){
+                    if(note.reminder!!){
                         note.reminder=false
                         setReminderTextAndIcon()
                     }else {
@@ -111,6 +111,8 @@ DatePickerDialog.OnDateSetListener{
         return binding.root
     }
 
+
+
     private fun setNoteData(){
         if(note.noteBody.isNotEmpty() || note.noteHeading.isNotEmpty()){
             binding.noteBody.editText?.setText(note.noteBody)
@@ -125,7 +127,7 @@ DatePickerDialog.OnDateSetListener{
 
     private fun setReminderTextAndIcon(){
         Log.i("EditTextFragment","$note")
-        if(note.reminder){
+        if(note.reminder!!){
             binding.reminderText.text =
                 getString(R.string.reminder_text,note.day,note.month,note.year,note.hour, note.minute)
             binding.reminderText.visibility = View.VISIBLE

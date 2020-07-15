@@ -21,7 +21,7 @@ fun NotificationManager.sendNotification(note: Note?, applicationContext: Contex
         }
         val donePendingIntent: PendingIntent = PendingIntent.getBroadcast(
             applicationContext,
-            note.id,
+            note.id.toInt(),
             doneIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -32,7 +32,7 @@ fun NotificationManager.sendNotification(note: Note?, applicationContext: Contex
         }
         val snoozePendingIntent: PendingIntent = PendingIntent.getBroadcast(
             applicationContext,
-            note.id,
+            note.id.toInt(),
             snoozeIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -56,7 +56,7 @@ fun NotificationManager.sendNotification(note: Note?, applicationContext: Contex
             .setContentTitle(note.noteHeading)
             .setContentText(note.noteBody)
 
-        notify(note.id, builder.build())
+        notify(note.id.toInt(), builder.build())
     }
 
 }

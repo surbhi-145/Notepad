@@ -23,7 +23,7 @@ class AlarmReceiver : BroadcastReceiver(){
 
         if (intent != null) {
             if(intent.extras != null) {
-                val id : Int  = intent.extras!!.get("ID") as Int
+                val id : Long  = intent.extras!!.get("ID") as Long
                 Log.i("Receiver","Receiver called , $id")
                 val notificationManager = ContextCompat.getSystemService(
                     context,
@@ -52,7 +52,7 @@ class DoneReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent != null) {
             if (intent.extras != null) {
-                val id: Int = intent.extras!!.get("ID") as Int
+                val id: Long = intent.extras!!.get("ID") as Long
                 Log.i("Receiver", "Done Receiver called , $id")
 
                 val notificationManager = ContextCompat.getSystemService(
@@ -69,7 +69,7 @@ class DoneReceiver : BroadcastReceiver(){
                         dataSource.updateNote(note!!)
                     }
                     Log.i("Receiver", "Done called, $note")
-                    notificationManager.cancel(note!!.id)
+                    notificationManager.cancel(note!!.id.toInt())
                     job.cancel()
                 }
 
@@ -85,7 +85,7 @@ class SnoozeReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent != null) {
             if (intent.extras != null) {
-                val id: Int = intent.extras!!.get("ID") as Int
+                val id: Long = intent.extras!!.get("ID") as Long
                 Log.i("Receiver", "Done Receiver called , $id")
 
                 val notificationManager = ContextCompat.getSystemService(
@@ -100,7 +100,7 @@ class SnoozeReceiver : BroadcastReceiver(){
                 uiScope.launch {
                     withContext(Dispatchers.IO) {
                         note = dataSource.getNoteById(id)
-                        val min = note?.minute?.plus(1)
+                        val min = note?.minute?.plus(5)
                         if (min != null) {
                             note?.minute = min % 60
                             val hour = note?.hour
@@ -118,11 +118,11 @@ class SnoozeReceiver : BroadcastReceiver(){
                     }
                     val notifyPendingIntent =PendingIntent.getBroadcast(
                         context,
-                        note!!.id,
+                        note!!.id.toInt(),
                         notifyIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT)
                     scheduleAlarm(note!!,notifyPendingIntent,context)
-                    notificationManager.cancel(note!!.id)
+                    notificationManager.cancel(note!!.id.toInt())
                     job.cancel()
                 }
             }

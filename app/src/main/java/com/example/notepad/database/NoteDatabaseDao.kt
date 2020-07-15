@@ -20,11 +20,14 @@ interface NoteDatabaseDao{
     fun getAllNotes() : LiveData<List<Note>>
 
     @Query("SELECT * FROM notes_table WHERE id= :noteId")
-    fun getNoteById(noteId : Int) : Note?
+    fun getNoteById(noteId : Long) : Note?
 
     @Query("SELECT * FROM notes_table ORDER BY id DESC LIMIT 1")
     fun getNewNote() : Note?
 
     @Query("DELETE FROM notes_table WHERE id= :noteId")
-    fun deleteNoteWithId(noteId : Int)
+    fun deleteNoteWithId(noteId : Long)
+
+    @Query("DELETE FROM notes_table WHERE (note_body=NULL or note_body='') AND (note_heading=NULL OR note_heading='')")
+    fun deleteEmpty()
 }

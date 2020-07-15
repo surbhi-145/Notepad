@@ -10,9 +10,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "notes_table")
 data class Note(
-    @ColumnInfo(name = "id")
+
     @PrimaryKey(autoGenerate = true)
-    var id : Int = 0 ,
+    var id : Long = 0L ,
 
     @ColumnInfo(name = "note_heading")
     var noteHeading: String = "",
@@ -36,6 +36,6 @@ data class Note(
     var minute : Int? = null,
 
     @ColumnInfo(name = "reminder")
-    var  reminder: Boolean = false
+    var  reminder: Boolean? = null
 
 ) : Parcelable

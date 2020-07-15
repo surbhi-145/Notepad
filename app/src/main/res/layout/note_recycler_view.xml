@@ -38,6 +38,7 @@
             android:id="@+id/noteBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxHeight="100dp"
             android:background="@drawable/rounded_text_view_body"
             android:padding="18dp"
             android:text="@{note.noteBody}"
